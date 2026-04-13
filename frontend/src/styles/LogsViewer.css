@@ -1,0 +1,148 @@
+.logs-viewer {
+  flex: 1;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-y: auto;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.no-logs {
+  color: #9ca3af;
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.log-entry {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  color: #d1d5db;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: flex-start;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-time {
+  color: #6b7280;
+  min-width: 70px;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.log-type {
+  min-width: 50px;
+  flex-shrink: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.log-type.info {
+  color: var(--primary-color);
+  background: rgba(42, 127, 201, 0.1);
+}
+
+.log-type.log {
+  color: #9ca3af;
+  background: rgba(156, 163, 175, 0.1);
+}
+
+.log-type.ok,
+.log-type.success {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.log-type.error {
+  color: #ca2b2b;
+  background: rgba(202, 43, 43, 0.1);
+}
+
+.log-type.warning {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.log-icon {
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.log-entry.info .log-icon {
+  color: var(--primary-color);
+}
+
+.log-entry.ok .log-icon,
+.log-entry.success .log-icon {
+  color: #10b981;
+}
+
+.log-entry.error .log-icon {
+  color: #ca2b2b;
+}
+
+.log-entry.warning .log-icon {
+  color: #f59e0b;
+}
+
+.log-message {
+  flex: 1;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.log-entry.ok .log-message,
+.log-entry.success .log-message {
+  color: #10b981;
+}
+
+.log-entry.error .log-message {
+  color: #ca2b2b;
+}
+
+.log-entry.warning .log-message {
+  color: #f59e0b;
+}
+
+/* Scrollbar styling */
+.logs-viewer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.logs-viewer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.logs-viewer::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+.logs-viewer::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .log-entry {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .log-time,
+  .log-type,
+  .log-icon {
+    display: inline;
+    min-width: auto;
+    margin-right: 8px;
+  }
+}

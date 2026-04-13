@@ -1,0 +1,37 @@
+{
+  "name": "User Auth Service v1.8.3",
+  "version": "v1.8.3",
+  "status": "Failed",
+  "stages": [
+    {
+      "name": "Build",
+      "duration": "1m 08s",
+      "status": "passed"
+    },
+    {
+      "name": "Unit tests",
+      "duration": "2m 20s",
+      "status": "passed"
+    },
+    {
+      "name": "Integration",
+      "duration": "3m 15s",
+      "status": "failed"
+    },
+    {
+      "name": "Staging deploy",
+      "duration": "-",
+      "status": "pending"
+    },
+    {
+      "name": "Canary",
+      "duration": "-",
+      "status": "pending"
+    },
+    {
+      "name": "Production",
+      "duration": "-",
+      "status": "pending"
+    }
+  ]
+}

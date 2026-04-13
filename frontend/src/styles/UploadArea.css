@@ -1,0 +1,111 @@
+.upload-area {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 2px dashed rgba(42, 127, 201, 0.25);
+  border-radius: 24px;
+  padding: 50px 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--primary-black);
+  box-shadow: 0 8px 32px rgba(42, 127, 201, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(42, 127, 201, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.upload-area:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(42, 127, 201, 0.4);
+  box-shadow: 0 20px 60px rgba(42, 127, 201, 0.15);
+  transform: translateY(-4px);
+}
+
+.upload-area.active {
+  background: rgba(42, 127, 201, 0.08);
+  border-color: var(--primary-color);
+  box-shadow: 0 20px 60px rgba(42, 127, 201, 0.25);
+}
+
+.upload-area.active .upload-icon {
+  animation: bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.upload-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 16px;
+  color: var(--primary-color);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 12px rgba(42, 127, 201, 0.2));
+}
+
+.upload-area:hover .upload-icon {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.upload-area h2 {
+  font-size: 1.3em;
+  margin: 8px 0;
+  font-weight: 700;
+  color: var(--primary-black);
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-area p {
+  font-size: 0.95em;
+  opacity: 0.72;
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.browse-text {
+  color: var(--primary-color);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+}
+
+.upload-area:hover .browse-text {
+  color: #1e5fa0;
+  text-decoration-style: solid;
+}

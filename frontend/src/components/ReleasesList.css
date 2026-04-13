@@ -1,0 +1,80 @@
+.releases-list h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5em;
+}
+
+.releases-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.release-card {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s;
+}
+
+.release-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.release-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.release-header h3 {
+  margin: 0;
+  color: #333;
+  word-break: break-word;
+}
+
+.version-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.release-info {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.release-info p {
+  margin: 5px 0;
+}
+
+.description {
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+  border-left: 3px solid #667eea;
+  padding-left: 10px;
+  margin: 10px 0 0 0;
+}
+
+.loading,
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 1.1em;
+}
+
+.empty-state {
+  background: #f0f0f0;
+  border-radius: 8px;
+  color: #999;
+}

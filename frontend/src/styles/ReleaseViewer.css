@@ -1,0 +1,114 @@
+.release-viewer {
+  min-height: 100vh;
+  background: #1f2937;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-header {
+  background: #111827;
+  border-bottom: 1px solid #374151;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--primary-white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #374151;
+}
+
+.release-info h1 {
+  font-size: 1.5em;
+  color: var(--primary-white);
+  margin: 0;
+}
+
+.release-info p {
+  color: #9ca3af;
+  font-size: 0.9em;
+  margin: 4px 0 0 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  background: #374151;
+  color: var(--primary-white);
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background: #4b5563;
+  border-color: var(--primary-color);
+}
+
+.status-btn {
+  background: #10b981;
+  border-color: #059669;
+}
+
+.status-btn:hover {
+  background: #059669;
+}
+
+.viewer-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar styling */
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
