@@ -3,6 +3,7 @@
 A release timeline management application with a Go backend API and React frontend.
 
 ![Release Lifecycle Viewer](./docs/release-viewer-screenshot.png)
+![Release Lifecycle Viewer](./docs/release-viewer-timeline.png)
 
 
 
