@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import StageDetails from '../components/StageDetails'
 import StageTracker from '../components/StageTracker'
@@ -10,7 +10,22 @@ export default function ReleaseViewer({
   setCurrentStage,
   onBack,
 }) {
-  const [logFilter, setLogFilter] = useState('All')
+
+  // Set initial stage to last stage if all stages are passed, otherwise first failed stage or current stage
+  useEffect(() => {
+    if (release && release.stages) {
+      const allPassed = release.stages.every(stage => stage.status === 'passed')
+      const failedIndex = release.stages.findIndex(stage => stage.status === 'failed')
+
+      if (allPassed) {
+        // Show last stage for fully passed releases
+        setCurrentStage(release.stages.length - 1)
+      } else if (failedIndex !== -1) {
+        // Show failed stage if there's a failure
+        setCurrentStage(failedIndex)
+      }
+    }
+  }, [release, setCurrentStage])
 
   const stageDetails = {
     0: {
@@ -46,10 +61,6 @@ export default function ReleaseViewer({
         tests: '54 / 54',
         duration: '3m 31s',
       },
-      error: {
-        title: 'Failure detected',
-        message: 'NullPointerException in UserSessionServicevalidateToken() at line 84. Auth middleware received undefined session context after Redis failover. Is integration tests failed with HTTP 500. Redis replica was promoted during the test run causing session store reconnect to fail silently.',
-      },
     },
     3: {
       logs: [
@@ -82,10 +93,6 @@ export default function ReleaseViewer({
 
   const currentStageData = stageDetails[currentStage] || stageDetails[0]
   const stage = release.stages[currentStage]
-
-  const filteredLogs = logFilter === 'All'
-    ? currentStageData.logs
-    : currentStageData.logs.filter((log) => log.type.toLowerCase() === logFilter.toLowerCase() || log.type === logFilter)
 
   return (
     <div className="release-viewer">
@@ -127,9 +134,7 @@ export default function ReleaseViewer({
             currentStageIndex={currentStage}
             stats={currentStageData.stats}
             error={currentStageData.error}
-            logs={filteredLogs}
-            logFilter={logFilter}
-            onFilterChange={setLogFilter}
+            logs={currentStageData.logs}
             onPrevStage={() => currentStage > 0 && setCurrentStage(currentStage - 1)}
             onNextStage={
               () => currentStage < release.stages.length - 1 && setCurrentStage(currentStage + 1)

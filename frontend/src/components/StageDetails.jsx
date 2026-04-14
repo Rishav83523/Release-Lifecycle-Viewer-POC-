@@ -12,8 +12,6 @@ export default function StageDetails({
   onPrevStage,
   onNextStage,
 }) {
-  const logTypes = ['All', 'INFO', 'LOG', 'OK', 'SUCCESS', 'Errors', 'Warnings']
-
   return (
     <div className="stage-details">
       <div className="details-header">
@@ -49,25 +47,31 @@ export default function StageDetails({
         </div>
       </div>
 
-      {/* Stage Stats */}
+      {/* Context Section */}
       {stats && (
-        <div className="stats-section">
-          {Object.entries(stats).map(([key, value]) => (
-            <div key={key} className="stat">
-              <p className="stat-label">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
-              <p className="stat-value">{value}</p>
-            </div>
-          ))}
+        <div className="context-section">
+          <h3>Context</h3>
+          <div className="context-grid">
+            {Object.entries(stats).map(([key, value]) => (
+              <div key={key} className="context-item">
+                <p className="context-label">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+                <p className="context-value">{value}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Error Alert */}
-      {error && (
-        <div className="error-alert">
-          <div className="error-icon">⚠</div>
-          <div className="error-content">
-            <h3>{error.title}</h3>
-            <p>{error.message}</p>
+      {/* Failure Points */}
+      {error && stage.status === 'failed' && (
+        <div className="failure-points-section">
+          <h3>Failure Point</h3>
+          <div className="error-alert">
+            <div className="error-icon">⚠</div>
+            <div className="error-content">
+              <h4>{error.title}</h4>
+              <p>{error.message}</p>
+            </div>
           </div>
         </div>
       )}
@@ -75,18 +79,6 @@ export default function StageDetails({
       {/* Logs */}
       <div className="logs-section">
         <h3>Logs</h3>
-        <div className="logs-filters">
-          {logTypes.map((type) => (
-            <button
-              key={type}
-              className={`filter-btn ${logFilter === type ? 'active' : ''}`}
-              onClick={() => onFilterChange(type)}
-            >
-              {type}
-              {type !== 'All' && ` (${logs.length})`}
-            </button>
-          ))}
-        </div>
         <LogsViewer logs={logs} />
       </div>
     </div>

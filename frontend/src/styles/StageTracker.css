@@ -1,8 +1,9 @@
 .stage-tracker {
-  background: #111827;
-  border-bottom: 1px solid #374151;
+  background: var(--primary-white);
+  border-bottom: 1px solid rgba(42, 127, 201, 0.08);
   padding: 24px;
   overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .tracker-content {
@@ -22,9 +23,9 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid #4b5563;
-  background: #1f2937;
-  color: #9ca3af;
+  border: 2px solid rgba(42, 127, 201, 0.2);
+  background: var(--primary-white);
+  color: var(--primary-black);
   font-size: 1.1em;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -38,52 +39,70 @@
 
 .tracker-dot:hover {
   border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(42, 127, 201, 0.1);
 }
 
 .tracker-dot.completed {
-  background: #10b981;
-  border-color: #10b981;
-  color: var(--primary-white);
+  background: rgba(36, 148, 70, 0.15);
+  border-color: #249446;
+  color: #249446;
 }
 
 .tracker-dot.current {
   background: var(--primary-color);
   border-color: var(--primary-color);
   color: var(--primary-white);
-  box-shadow: 0 0 12px rgba(42, 127, 201, 0.5);
+  box-shadow: 0 0 12px rgba(42, 127, 201, 0.3);
   animation: pulse-dot 2s infinite;
 }
 
 .tracker-dot.pending {
-  background: #1f2937;
-  border-color: #4b5563;
+  background: var(--primary-white);
+  border-color: rgba(42, 127, 201, 0.1);
+  color: var(--primary-black);
 }
 
 .tracker-dot.failed {
-  background: #ca2b2b;
+  background: rgba(202, 43, 43, 0.15);
   border-color: #ca2b2b;
-  color: var(--primary-white);
+  color: #ca2b2b;
 }
 
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 12px rgba(42, 127, 201, 0.5);
+    box-shadow: 0 0 12px rgba(42, 127, 201, 0.3);
   }
   50% {
-    box-shadow: 0 0 20px rgba(42, 127, 201, 0.8);
+    box-shadow: 0 0 20px rgba(42, 127, 201, 0.5);
   }
+}
+
+.tracker-dot.disabled {
+  background: rgba(107, 114, 128, 0.1);
+  border-color: rgba(107, 114, 128, 0.2);
+  color: rgba(107, 114, 128, 0.5);
+  cursor: not-allowed;
+}
+
+.tracker-dot.disabled:hover {
+  border-color: rgba(107, 114, 128, 0.2);
+  box-shadow: none;
+}
+
+.tracker-line.disabled {
+  background: rgba(107, 114, 128, 0.1);
 }
 
 .tracker-line {
   width: 40px;
   height: 2px;
-  background: #4b5563;
+  background: rgba(42, 127, 201, 0.1);
   transition: all 0.3s ease;
 }
 
 .tracker-line.completed {
-  background: #10b981;
+  background: #249446;
 }
 
 .tracker-line.current {

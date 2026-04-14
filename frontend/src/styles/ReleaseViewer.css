@@ -1,13 +1,13 @@
 .release-viewer {
   min-height: 100vh;
-  background: #1f2937;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   display: flex;
   flex-direction: column;
 }
 
 .viewer-header {
-  background: #111827;
-  border-bottom: 1px solid #374151;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  border-bottom: 1px solid rgba(42, 127, 201, 0.08);
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
@@ -23,7 +23,7 @@
 .back-btn {
   background: none;
   border: none;
-  color: var(--primary-white);
+  color: var(--primary-black);
   font-size: 24px;
   cursor: pointer;
   padding: 0;
@@ -37,17 +37,18 @@
 }
 
 .back-btn:hover {
-  background: #374151;
+  background: rgba(42, 127, 201, 0.1);
 }
 
 .release-info h1 {
   font-size: 1.5em;
-  color: var(--primary-white);
+  color: var(--primary-black);
   margin: 0;
+  font-weight: 700;
 }
 
 .release-info p {
-  color: #9ca3af;
+  color: var(--deployment-tab-text-color);
   font-size: 0.9em;
   margin: 4px 0 0 0;
 }
@@ -59,27 +60,29 @@
 
 .action-btn {
   padding: 8px 16px;
-  background: #374151;
-  color: var(--primary-white);
-  border: 1px solid #4b5563;
+  background: var(--primary-white);
+  color: var(--primary-color);
+  border: 1px solid rgba(42, 127, 201, 0.1);
   border-radius: 6px;
   font-size: 0.9em;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .action-btn:hover {
-  background: #4b5563;
+  background: rgba(42, 127, 201, 0.05);
   border-color: var(--primary-color);
 }
 
 .status-btn {
-  background: #10b981;
-  border-color: #059669;
+  background: rgba(36, 148, 70, 0.15);
+  color: #249446;
+  border-color: rgba(36, 148, 70, 0.2);
 }
 
 .status-btn:hover {
-  background: #059669;
+  background: rgba(36, 148, 70, 0.25);
 }
 
 .viewer-content {
@@ -101,14 +104,14 @@
 }
 
 .main-content::-webkit-scrollbar-track {
-  background: #2d3748;
+  background: transparent;
 }
 
 .main-content::-webkit-scrollbar-thumb {
-  background: #4b5563;
+  background: rgba(42, 127, 201, 0.2);
   border-radius: 4px;
 }
 
 .main-content::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: rgba(42, 127, 201, 0.4);
 }
