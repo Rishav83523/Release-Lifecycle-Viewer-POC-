@@ -1,0 +1,68 @@
+{
+  "id": "ui-test-release-v1-5-0",
+  "name": "UI Test Release",
+  "version": "v1.5.0",
+  "environment": "QA",
+  "triggeredBy": "QA Team",
+  "summary": "Release for UI testing of all API endpoints",
+  "description": "This release demonstrates all features: create, read, update, delete operations",
+  "events": [
+    {
+      "step": "Release Created",
+      "event": "release_created",
+      "timestamp": "2026-04-14T09:00:00Z",
+      "status": "success",
+      "actor": "Test Portal",
+      "logs": ["Release v1.5.0 created successfully"],
+      "relatedData": { "releaseId": "ui-test-001" },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "not_started",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Test Portal",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Started",
+      "event": "validation_started",
+      "timestamp": "2026-04-14T09:02:00Z",
+      "status": "success",
+      "actor": "Validation Engine",
+      "logs": ["All validation checks started"],
+      "relatedData": { "checks": "20" },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "running",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Engine",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Passed",
+      "event": "validation_passed",
+      "timestamp": "2026-04-14T09:05:00Z",
+      "status": "success",
+      "actor": "Validation Engine",
+      "logs": ["All 20 checks passed successfully"],
+      "relatedData": { "checksPassed": "20/20" },
+      "snapshot": {
+        "releaseState": "validated",
+        "validationState": "passed",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Engine",
+        "relatedData": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "id": "poc-test-001",
+  "name": "POC Test Release",
+  "version": "v1.0.0",
+  "environment": "QA",
+  "triggeredBy": "Manual Test",
+  "summary": "Initial upload - should FAIL",
+  "description": "This has incomplete event data and a failed step",
+  "events": [
+    {
+      "step": "Release Created",
+      "event": "release_created",
+      "timestamp": "2026-04-14T10:00:00Z",
+      "status": "success",
+      "actor": "Test User",
+      "logs": ["Release poc-test-001 created successfully"],
+      "relatedData": {"releaseId": "poc-test-001"},
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "not_started",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Test User",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Started",
+      "event": "validation_started",
+      "timestamp": "2026-04-14T10:01:00Z",
+      "status": "success",
+      "actor": "Validation Service",
+      "logs": ["Running validation checks"],
+      "relatedData": {"checks": "15"},
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "running",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Service",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Configuration Check",
+      "event": "config_check",
+      "timestamp": "2026-04-14T10:02:00Z",
+      "status": "failed",
+      "actor": "Validation Service",
+      "logs": ["Configuration validation FAILED", "Missing required database connection"],
+      "relatedData": {"reason": "config_error"},
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "failed",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Service",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Deployment Blocked",
+      "event": "deployment_blocked",
+      "timestamp": "2026-04-14T10:03:00Z",
+      "status": "failed",
+      "actor": "Deployment Service",
+      "logs": ["Deployment blocked due to validation failure"],
+      "relatedData": {"reason": "validation_failed"},
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "failed",
+        "trialState": "not_started",
+        "deploymentState": "blocked",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Deployment Service",
+        "relatedData": {}
+      }
+    }
+  ]
+}

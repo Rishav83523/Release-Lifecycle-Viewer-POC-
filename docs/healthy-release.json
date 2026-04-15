@@ -1,0 +1,37 @@
+{
+  "name": "Payment Service v2.5.0",
+  "version": "v2.5.0",
+  "status": "Passed",
+  "stages": [
+    {
+      "name": "Build",
+      "duration": "1m 15s",
+      "status": "passed"
+    },
+    {
+      "name": "Unit tests",
+      "duration": "2m 30s",
+      "status": "passed"
+    },
+    {
+      "name": "Integration",
+      "duration": "4m 12s",
+      "status": "passed"
+    },
+    {
+      "name": "Staging deploy",
+      "duration": "1m 05s",
+      "status": "passed"
+    },
+    {
+      "name": "Canary",
+      "duration": "2m 45s",
+      "status": "passed"
+    },
+    {
+      "name": "Production",
+      "duration": "3m 30s",
+      "status": "passed"
+    }
+  ]
+}

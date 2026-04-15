@@ -1,0 +1,68 @@
+{
+  "id": "rule-engine-test-fail",
+  "name": "Rule Engine Test - Should Fail",
+  "version": "0.0.0",
+  "environment": "offline",
+  "triggeredBy": "unknown-user",
+  "summary": "",
+  "description": "",
+  "events": [
+    {
+      "step": "Release Created",
+      "event": "release_created",
+      "timestamp": "2026-04-14T10:00:00Z",
+      "status": "success",
+      "actor": "System",
+      "logs": ["Release created"],
+      "relatedData": {"releaseId": "rule-engine-test-fail"},
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "not_started",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "offline",
+        "triggeredBy": "System",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Deployment Started",
+      "event": "deployment_started",
+      "timestamp": "2026-04-14T10:05:00Z",
+      "status": "success",
+      "actor": "Deployment",
+      "logs": ["Starting deployment"],
+      "relatedData": {"environment": "prod"},
+      "snapshot": {
+        "releaseState": "deployed",
+        "validationState": "passed",
+        "trialState": "passed",
+        "deploymentState": "running",
+        "notificationState": "not_sent",
+        "aircraft": "offline",
+        "triggeredBy": "Deployment",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Health Check",
+      "event": "health_check",
+      "timestamp": "2026-04-14T10:07:00Z",
+      "status": "failed",
+      "actor": "Health Monitor",
+      "logs": ["Service not responding", "Connection timeout"],
+      "relatedData": {"reason": "timeout"},
+      "snapshot": {
+        "releaseState": "deployed",
+        "validationState": "passed",
+        "trialState": "passed",
+        "deploymentState": "timeout",
+        "notificationState": "not_sent",
+        "aircraft": "offline",
+        "triggeredBy": "Health Monitor",
+        "relatedData": {}
+      }
+    }
+  ]
+}

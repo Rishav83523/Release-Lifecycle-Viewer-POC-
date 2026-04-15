@@ -1,0 +1,142 @@
+{
+  "id": "poc-test-001",
+  "name": "POC Test Release - Fixed",
+  "version": "v1.0.0",
+  "environment": "QA",
+  "triggeredBy": "Manual Test",
+  "summary": "Updated release - should PASS",
+  "description": "Now has complete and valid event data",
+  "events": [
+    {
+      "step": "Release Created",
+      "event": "release_created",
+      "timestamp": "2026-04-14T10:00:00Z",
+      "status": "success",
+      "actor": "Test User",
+      "logs": [
+        "Release poc-test-001 created successfully",
+        "Initial validation queued"
+      ],
+      "relatedData": {
+        "releaseId": "poc-test-001",
+        "queuePosition": "1"
+      },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "not_started",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Test User",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Started",
+      "event": "validation_started",
+      "timestamp": "2026-04-14T10:01:00Z",
+      "status": "success",
+      "actor": "Validation Service",
+      "logs": [
+        "Running 15 validation checks",
+        "Configuration validation in progress",
+        "Dependency checks in progress"
+      ],
+      "relatedData": {
+        "totalChecks": "15",
+        "checkType": "comprehensive"
+      },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "running",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Service",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Passed",
+      "event": "validation_passed",
+      "timestamp": "2026-04-14T10:03:00Z",
+      "status": "success",
+      "actor": "Validation Service",
+      "logs": [
+        "All 15 validation checks PASSED",
+        "Configuration is valid",
+        "All dependencies resolved",
+        "Ready for trial deployment"
+      ],
+      "relatedData": {
+        "checksPassed": "15/15",
+        "passPercentage": "100%"
+      },
+      "snapshot": {
+        "releaseState": "validated",
+        "validationState": "passed",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Validation Service",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Trial Deployment Started",
+      "event": "trial_deployment_started",
+      "timestamp": "2026-04-14T10:05:00Z",
+      "status": "success",
+      "actor": "Deployment Service",
+      "logs": [
+        "Starting trial deployment",
+        "Deploying to QA environment",
+        "Health checks enabled"
+      ],
+      "relatedData": {
+        "environment": "QA",
+        "deploymentId": "trial-poc-001"
+      },
+      "snapshot": {
+        "releaseState": "validated",
+        "validationState": "passed",
+        "trialState": "running",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Deployment Service",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Trial Deployment Passed",
+      "event": "trial_deployment_passed",
+      "timestamp": "2026-04-14T10:08:00Z",
+      "status": "success",
+      "actor": "Deployment Service",
+      "logs": [
+        "Trial deployment completed successfully",
+        "All health checks passed",
+        "System stable and operational",
+        "Ready for production deployment"
+      ],
+      "relatedData": {
+        "uptime": "100%",
+        "healthChecksPassed": "20/20"
+      },
+      "snapshot": {
+        "releaseState": "validated",
+        "validationState": "passed",
+        "trialState": "passed",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "QA-TEST",
+        "triggeredBy": "Deployment Service",
+        "relatedData": {}
+      }
+    }
+  ]
+}

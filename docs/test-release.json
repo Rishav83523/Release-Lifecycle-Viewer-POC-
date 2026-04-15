@@ -1,0 +1,203 @@
+{
+  "id": "test-release-comprehensive-v1-0-0",
+  "name": "Test Release - Comprehensive",
+  "version": "v1.0.0",
+  "environment": "Testing",
+  "triggeredBy": "Test Suite",
+  "summary": "Comprehensive test release for API validation",
+  "description": "Tests all stages including validation, trial, deployment, and notifications",
+  "events": [
+    {
+      "step": "Release Created",
+      "event": "release_created",
+      "timestamp": "2026-04-14T08:00:00Z",
+      "status": "success",
+      "actor": "Test Portal",
+      "logs": [
+        "Release v1.0.0 created for test-service",
+        "Initial metadata validated and stored"
+      ],
+      "relatedData": {
+        "releaseId": "test-001",
+        "releaseType": "test"
+      },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "not_started",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Test Portal",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Started",
+      "event": "validation_started",
+      "timestamp": "2026-04-14T08:02:00Z",
+      "status": "success",
+      "actor": "Validation Engine",
+      "logs": ["Validation rules loaded", "Dependency graph generated"],
+      "relatedData": {
+        "gates": "schema, compatibility, security"
+      },
+      "snapshot": {
+        "releaseState": "created",
+        "validationState": "running",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Validation Engine",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Validation Passed",
+      "event": "validation_passed",
+      "timestamp": "2026-04-14T08:05:00Z",
+      "status": "success",
+      "actor": "Validation Engine",
+      "logs": [
+        "All mandatory checks passed",
+        "No dependency conflicts detected"
+      ],
+      "relatedData": {
+        "testsPassed": "100/100",
+        "checks": "schema, compatibility, security"
+      },
+      "snapshot": {
+        "releaseState": "validated",
+        "validationState": "passed",
+        "trialState": "not_started",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Validation Engine",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Trial Initiated",
+      "event": "trial_initiated",
+      "timestamp": "2026-04-14T08:08:00Z",
+      "status": "success",
+      "actor": "Trial Coordinator",
+      "logs": [
+        "Trial environment provisioned",
+        "Aircraft TEST-001 selected for runtime verification"
+      ],
+      "relatedData": {
+        "aircraft": "TEST-001",
+        "trialWindow": "15m"
+      },
+      "snapshot": {
+        "releaseState": "trial",
+        "validationState": "passed",
+        "trialState": "running",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Trial Coordinator",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Trial Approved",
+      "event": "trial_approved",
+      "timestamp": "2026-04-14T08:12:00Z",
+      "status": "success",
+      "actor": "Trial Approver",
+      "logs": [
+        "Operational trial completed successfully",
+        "No regressions detected in runtime checks"
+      ],
+      "relatedData": {
+        "approval": "signed-off"
+      },
+      "snapshot": {
+        "releaseState": "trial-approved",
+        "validationState": "passed",
+        "trialState": "approved",
+        "deploymentState": "not_started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Trial Approver",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Deployment Started",
+      "event": "deployment_started",
+      "timestamp": "2026-04-14T08:15:00Z",
+      "status": "success",
+      "actor": "Pipeline",
+      "logs": [
+        "Production deployment pipeline started",
+        "Container image promotion initiated"
+      ],
+      "relatedData": {
+        "environment": "production"
+      },
+      "snapshot": {
+        "releaseState": "deploying",
+        "validationState": "passed",
+        "trialState": "approved",
+        "deploymentState": "started",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Pipeline",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Deployment Completed",
+      "event": "deployment_completed",
+      "timestamp": "2026-04-14T08:18:00Z",
+      "status": "success",
+      "actor": "Pipeline",
+      "logs": [
+        "Deployment succeeded",
+        "All production probes returned healthy responses"
+      ],
+      "relatedData": {
+        "latency": "45ms"
+      },
+      "snapshot": {
+        "releaseState": "completed",
+        "validationState": "passed",
+        "trialState": "approved",
+        "deploymentState": "completed",
+        "notificationState": "not_sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Pipeline",
+        "relatedData": {}
+      }
+    },
+    {
+      "step": "Notification Sent",
+      "event": "notification_sent",
+      "timestamp": "2026-04-14T08:20:00Z",
+      "status": "success",
+      "actor": "Notifier",
+      "logs": [
+        "Release notification dispatched to stakeholders",
+        "Audit trail closed for the release"
+      ],
+      "relatedData": {
+        "channel": "email,slack"
+      },
+      "snapshot": {
+        "releaseState": "completed",
+        "validationState": "passed",
+        "trialState": "approved",
+        "deploymentState": "completed",
+        "notificationState": "sent",
+        "aircraft": "TEST-001",
+        "triggeredBy": "Notifier",
+        "relatedData": {}
+      }
+    }
+  ]
+}

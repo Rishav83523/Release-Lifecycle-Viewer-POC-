@@ -1,81 +1,267 @@
-import { useState, useEffect } from 'react'
-import Sidebar from '../components/Sidebar'
-import StageDetails from '../components/StageDetails'
-import StageTracker from '../components/StageTracker'
-import '../styles/ReleaseViewer.css'
-
-// Helper function to generate logs based on stage status
-const generateStageLogs = (stageName, status) => {
-  if (status === 'failed') {
-    return [
-      { time: '08:05:45', type: 'LOG', message: `Running ${stageName} suite...` },
-      { time: '08:05:52', type: 'OK', message: '48 / 54 tests passed' },
-      { time: '08:05:58', type: 'ERROR', message: 'NullPointerException in UserSessionService.validateToken() at line 84' },
-      { time: '08:05:59', type: 'ERROR', message: 'Auth middleware received undefined session context after Redis failover' },
-      { time: '08:06:01', type: 'ERROR', message: `${stageName} suite failed with HTTP 500` },
-    ]
-  }
-
-  // Passed stage logs
-  return [
-    { time: '08:05:45', type: 'LOG', message: `Running ${stageName} suite...` },
-    { time: '08:05:52', type: 'OK', message: '54 / 54 tests passed' },
-    { time: '08:05:59', type: 'SUCCESS', message: 'All tests completed successfully' },
-  ]
-}
+import { useEffect, useMemo, useRef, useState } from 'react'
+import Sidebar from '../components/common/Sidebar'
+import StageDetails from '../components/release/StageDetails'
+import StageTracker from '../components/release/StageTracker'
+import { buildReplayView, fetchReplayState } from '../lib/releaseModel'
+import '../styles/pages/ReleaseViewer.css'
 
 export default function ReleaseViewer({
   release,
-  currentStage,
-  setCurrentStage,
   onBack,
 }) {
-  // Set initial stage to last stage if all stages are passed, otherwise first failed stage or current stage
-  useEffect(() => {
-    if (release && release.stages) {
-      const allPassed = release.stages.every(stage => stage.status === 'passed')
-      const failedIndex = release.stages.findIndex(stage => stage.status === 'failed')
+  const [currentEventIndex, setCurrentEventIndex] = useState(0)
+  const [serverReplay, setServerReplay] = useState(null)
+  const [loadingReplay, setLoadingReplay] = useState(false)
+  const [replayError, setReplayError] = useState('')
+  const [isAutoRunning, setIsAutoRunning] = useState(false)
+  const [runningEventIndex, setRunningEventIndex] = useState(null)
+  const [stepStatuses, setStepStatuses] = useState([])
+  const stepDelayMs = 3000
+  const autoRunTimerRef = useRef(null)
+  const replayRunIdRef = useRef(0)
 
-      if (allPassed) {
-        // Show last stage for fully passed releases
-        setCurrentStage(release.stages.length - 1)
-      } else if (failedIndex !== -1) {
-        // Show failed stage if there's a failure
-        setCurrentStage(failedIndex)
+  useEffect(() => {
+    if (!release?.events?.length) {
+      return undefined
+    }
+
+    replayRunIdRef.current += 1
+    const runId = replayRunIdRef.current
+
+    setStepStatuses(new Array(release.events.length).fill('pending'))
+    setCurrentEventIndex(0)
+    setServerReplay(null)
+    setReplayError('')
+    setRunningEventIndex(null)
+    setIsAutoRunning(false)
+
+    if (autoRunTimerRef.current) {
+      clearTimeout(autoRunTimerRef.current)
+      autoRunTimerRef.current = null
+    }
+
+    // Delay kickoff by a tick so StrictMode cleanup can cancel the first mount run.
+    autoRunTimerRef.current = setTimeout(() => {
+      if (replayRunIdRef.current !== runId) {
+        return
+      }
+
+      runReplaySequence(0, runId)
+    }, 0)
+
+    return () => {
+      if (autoRunTimerRef.current) {
+        clearTimeout(autoRunTimerRef.current)
+        autoRunTimerRef.current = null
+      }
+
+      if (replayRunIdRef.current === runId) {
+        replayRunIdRef.current += 1
       }
     }
-  }, [release, setCurrentStage])
+  }, [release?.id, release?.events?.length])
 
-  // Generate stage details dynamically based on release data
-  const generateStageDetails = () => {
-    const details = {}
-    release.stages.forEach((stage, index) => {
-      const status = stage.status
-      const stageName = stage.name
+  const runStep = async (stepIndex, runId = null) => {
+    if (!release?.id) {
+      return null
+    }
 
-      details[index] = {
-        logs: generateStageLogs(stageName, status),
-        stats: {
-          tests: status === 'failed' ? '48 / 54' : '54 / 54',
-          duration: stage.duration,
-        },
+    if (runId !== null && runId !== replayRunIdRef.current) {
+      return null
+    }
+
+    setRunningEventIndex(stepIndex)
+    setLoadingReplay(true)
+    setReplayError('')
+    setCurrentEventIndex(stepIndex)
+    setStepStatuses((current) => {
+      const next = current.length ? [...current] : new Array(release.events.length).fill('pending')
+      for (let index = stepIndex; index < next.length; index += 1) {
+        next[index] = 'pending'
       }
-
-      // Add error only for failed stages
-      if (status === 'failed') {
-        details[index].error = {
-          title: 'Failure detected',
-          message: 'NullPointerException in UserSessionService.validateToken() at line 84. Auth middleware received undefined session context after Redis failover. Redis replica was promoted during the test run causing session store reconnect to fail silently.',
-        }
-      }
+      next[stepIndex] = 'running'
+      return next
     })
-    return details
+
+    try {
+      if (runId !== null && runId !== replayRunIdRef.current) {
+        return null
+      }
+
+      const replayData = await fetchReplayState(release.id, stepIndex)
+
+      if (runId !== null && runId !== replayRunIdRef.current) {
+        return null
+      }
+
+      setServerReplay(replayData)
+      await new Promise((resolve) => {
+        setTimeout(resolve, stepDelayMs)
+      })
+
+      if (runId !== null && runId !== replayRunIdRef.current) {
+        return null
+      }
+
+      setStepStatuses((current) => {
+        const next = [...current]
+        next[stepIndex] = replayData?.selectedEvent?.status === 'failed' ? 'failed' : 'passed'
+        return next
+      })
+      return replayData
+    } catch (error) {
+      setReplayError(error.message)
+      setStepStatuses((current) => {
+        const next = [...current]
+        next[stepIndex] = 'failed'
+        return next
+      })
+      return null
+    } finally {
+      if (runId === null || runId === replayRunIdRef.current) {
+        setRunningEventIndex(null)
+        setLoadingReplay(false)
+      }
+    }
   }
 
-  const stageDetails = generateStageDetails()
+  const runReplaySequence = async (startIndex = 0, runId = replayRunIdRef.current) => {
+    if (!release?.events?.length) {
+      return
+    }
 
-  const currentStageData = stageDetails[currentStage] || stageDetails[0]
-  const stage = release.stages[currentStage]
+    if (runId !== replayRunIdRef.current) {
+      return
+    }
+
+    setIsAutoRunning(true)
+    setReplayError('')
+    setCurrentEventIndex(startIndex)
+    setStepStatuses((current) => {
+      const next = current.length ? [...current] : new Array(release.events.length).fill('pending')
+      for (let index = 0; index < next.length; index += 1) {
+        next[index] = index < startIndex ? 'passed' : 'pending'
+      }
+      return next
+    })
+
+    for (let index = startIndex; index < release.events.length; index += 1) {
+      if (runId !== replayRunIdRef.current) {
+        return
+      }
+
+      const replayData = await runStep(index, runId)
+      if (!replayData || replayData.selectedEvent?.status === 'failed') {
+        if (runId === replayRunIdRef.current) {
+          setIsAutoRunning(false)
+        }
+        return
+      }
+    }
+
+    if (runId === replayRunIdRef.current) {
+      setIsAutoRunning(false)
+    }
+  }
+
+  const replayView = useMemo(() => {
+    const sourceRelease = serverReplay?.release || release
+
+    if (!sourceRelease) {
+      return null
+    }
+
+    // Always use currentEventIndex for display navigation, not server's selectedIndex
+    return buildReplayView(sourceRelease, currentEventIndex)
+  }, [currentEventIndex, release, serverReplay])
+
+  if (!replayView || !replayView.release.events.length) {
+    return null
+  }
+
+  const { selectedEvent, selectedIndex } = replayView
+  const releaseStatus = replayView.release.status
+  const displayEvent =
+    runningEventIndex === selectedIndex
+      ? {
+          ...selectedEvent,
+          status: 'running',
+          failureReason: '',
+          recommendation: '',
+          logs: [],
+        }
+      : selectedEvent
+
+  const handleManualSelect = (index) => {
+    if (isAutoRunning) {
+      return
+    }
+
+    setCurrentEventIndex(index)
+    // Clear steps after this one
+    setStepStatuses((current) => {
+      const next = [...current]
+      for (let i = index + 1; i < next.length; i++) {
+        next[i] = 'pending'
+      }
+      return next
+    })
+  }
+
+  const handleReplayAll = () => {
+    if (isAutoRunning) {
+      return
+    }
+
+    replayRunIdRef.current += 1
+    runReplaySequence(0, replayRunIdRef.current)
+  }
+
+  const handleReplayCurrentStep = () => {
+    if (isAutoRunning) {
+      return
+    }
+
+    runStep(selectedIndex)
+  }
+
+  const handleNavigatePrev = () => {
+    if (isAutoRunning) {
+      return
+    }
+
+    if (selectedIndex > 0) {
+      const newIndex = selectedIndex - 1
+      setCurrentEventIndex(newIndex)
+      // Clear steps after the previous step
+      setStepStatuses((current) => {
+        const next = [...current]
+        for (let i = newIndex + 1; i < next.length; i++) {
+          next[i] = 'pending'
+        }
+        return next
+      })
+    }
+  }
+
+  const handleNavigateNext = () => {
+    if (isAutoRunning) {
+      return
+    }
+
+    if (selectedIndex < replayView.release.events.length - 1) {
+      const newIndex = selectedIndex + 1
+      setCurrentEventIndex(newIndex)
+      // Clear steps after the next step
+      setStepStatuses((current) => {
+        const next = [...current]
+        for (let i = newIndex + 1; i < next.length; i++) {
+          next[i] = 'pending'
+        }
+        return next
+      })
+    }
+  }
 
   return (
     <div className="release-viewer">
@@ -90,38 +276,45 @@ export default function ReleaseViewer({
           </div>
         </div>
         <div className="header-actions">
-          <button className="action-btn status-btn" title={release.status}>
-            {release.status}
+          <button className="action-btn status-btn" title={releaseStatus}>
+            {releaseStatus}
           </button>
-          <button className="action-btn">Run all stages</button>
-          <button className="action-btn">Upload new</button>
+          <button className="action-btn" onClick={handleReplayAll} disabled={isAutoRunning}>
+            {isAutoRunning ? 'Replaying...' : 'Replay from start'}
+          </button>
         </div>
       </header>
 
       <div className="viewer-content">
         <Sidebar
-          stages={release.stages}
-          currentStage={currentStage}
-          onSelectStage={setCurrentStage}
+          events={replayView.release.events}
+          currentEventIndex={selectedIndex}
+          onSelectEvent={handleManualSelect}
+          runningEventIndex={runningEventIndex}
+          stepStatuses={stepStatuses}
+          isAutoRunning={isAutoRunning}
         />
 
         <div className="main-content">
           <StageTracker
-            stages={release.stages}
-            currentStage={currentStage}
-            onSelectStage={setCurrentStage}
+            events={replayView.release.events}
+            currentEventIndex={selectedIndex}
+            onSelectEvent={handleManualSelect}
+            runningEventIndex={runningEventIndex}
+            stepStatuses={stepStatuses}
+            isAutoRunning={isAutoRunning}
           />
 
           <StageDetails
-            stage={stage}
-            currentStageIndex={currentStage}
-            stats={currentStageData.stats}
-            error={currentStageData.error}
-            logs={currentStageData.logs}
-            onPrevStage={() => currentStage > 0 && setCurrentStage(currentStage - 1)}
-            onNextStage={
-              () => currentStage < release.stages.length - 1 && setCurrentStage(currentStage + 1)
-            }
+            event={displayEvent}
+            eventIndex={selectedIndex}
+            totalEvents={replayView.release.events.length}
+            onPrevEvent={handleNavigatePrev}
+            onNextEvent={handleNavigateNext}
+            onReplay={handleReplayCurrentStep}
+            replayError={replayError}
+            isAutoRunning={isAutoRunning}
+            runningEventIndex={runningEventIndex}
           />
         </div>
       </div>

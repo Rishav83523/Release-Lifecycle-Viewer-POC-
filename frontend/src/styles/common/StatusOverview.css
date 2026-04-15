@@ -1,0 +1,191 @@
+.status-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  height: 100%;
+}
+
+.overview-card {
+  background: var(--primary-white);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(42, 127, 201, 0.05);
+  transition: all 0.3s ease;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.overview-card:hover {
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.1);
+}
+
+.overview-card h3 {
+  font-size: 1.1em;
+  color: var(--primary-black);
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  justify-items: center;
+}
+
+.circle-progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+}
+
+.circle-progress-wrapper {
+  position: relative;
+  width: 78px;
+  height: 78px;
+}
+
+.circle-progress-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circle-background {
+  fill: none;
+  stroke: #E5E7EB;
+  stroke-width: 8;
+}
+
+.circle-progress {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.circle-progress.blue {
+  stroke: var(--primary-color);
+}
+
+.circle-progress.green {
+  stroke: #249446;
+}
+
+.circle-progress.red {
+  stroke: #ca2b2b;
+}
+
+.circle-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.circle-value {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--primary-black);
+}
+
+.circle-percent {
+  font-size: 0.7em;
+  color: var(--deployment-tab-text-color);
+  font-weight: 500;
+}
+
+.circle-label {
+  font-size: 0.7em;
+  color: var(--deployment-tab-text-color);
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(42, 127, 201, 0.05);
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+.activity-item:hover {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e9eef2 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.activity-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activity-dot.passed {
+  background: #249446;
+}
+
+.activity-dot.failed {
+  background: #ca2b2b;
+}
+
+.activity-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-info p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--primary-black);
+  font-size: 0.85em;
+}
+
+.activity-info span {
+  margin: 2px 0 0 0;
+  font-size: 0.75em;
+  color: var(--deployment-tab-text-color);
+}
+
+.time {
+  font-size: 0.75em;
+  color: var(--background-dark-gray);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .status-overview {
+    display: flex;
+    grid-template-columns: 1fr;
+  }
+}

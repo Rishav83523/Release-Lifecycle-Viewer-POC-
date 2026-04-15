@@ -1,0 +1,213 @@
+.stage-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  overflow-y: auto;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(42, 127, 201, 0.08);
+}
+
+.stage-title h2 {
+  font-size: 1.8em;
+  color: var(--primary-black);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.stage-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.passed {
+  background: rgba(36, 148, 70, 0.15);
+  color: #249446;
+}
+
+.status-badge.failed {
+  background: rgba(202, 43, 43, 0.15);
+  color: #ca2b2b;
+}
+
+.status-badge.pending {
+  background: rgba(107, 114, 128, 0.15);
+  color: var(--deployment-tab-text-color);
+}
+
+.status-badge.in-progress {
+  background: rgba(42, 127, 201, 0.15);
+  color: var(--primary-color);
+}
+
+.status-badge.running {
+  background: rgba(42, 127, 201, 0.15);
+  color: var(--primary-color);
+}
+
+.duration {
+  color: var(--deployment-tab-text-color);
+  font-size: 0.9em;
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-btn,
+.replay-btn {
+  padding: 8px 16px;
+  background: var(--primary-white);
+  color: var(--primary-color);
+  border: 1px solid rgba(42, 127, 201, 0.1);
+  border-radius: 6px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-btn:hover:not(:disabled),
+.replay-btn:hover {
+  background: rgba(42, 127, 201, 0.05);
+  border-color: var(--primary-color);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.replay-btn {
+  background: rgba(42, 127, 201, 0.08);
+}
+
+/* Stats Section */
+.context-section {
+  margin-bottom: 24px;
+}
+
+.context-section h3 {
+  font-size: 1.05em;
+  color: var(--primary-black);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  background: var(--primary-white);
+  border-radius: 12px;
+  border: 1px solid rgba(42, 127, 201, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.context-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.context-label {
+  font-size: 0.75em;
+  color: var(--deployment-tab-text-color);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.context-value {
+  font-size: 1.5em;
+  color: var(--primary-black);
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Error Alert */
+.error-alert {
+  display: flex;
+  gap: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(202, 43, 43, 0.08) 0%,
+    rgba(202, 43, 43, 0.04) 100%
+  );
+  border: 1px solid rgba(202, 43, 43, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 0;
+}
+
+.error-icon {
+  font-size: 1.5em;
+  color: #ca2b2b;
+  flex-shrink: 0;
+}
+
+.error-content h4 {
+  color: #ca2b2b;
+  margin: 0 0 8px 0;
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.error-content h3 {
+  color: #ca2b2b;
+  margin: 0 0 8px 0;
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.error-content p {
+  color: var(--primary-black);
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95em;
+}
+
+/* Failure Points Section */
+.failure-points-section {
+  margin-bottom: 24px;
+}
+
+.failure-points-section h3 {
+  font-size: 1.05em;
+  color: #ca2b2b;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+/* Logs Section */
+.logs-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logs-section h3 {
+  font-size: 1.05em;
+  color: var(--primary-black);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}

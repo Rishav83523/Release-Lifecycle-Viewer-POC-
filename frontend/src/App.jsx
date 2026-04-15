@@ -1,16 +1,14 @@
 import { useState } from 'react'
-import './App.css'
 import LandingPage from './pages/LandingPage'
 import ReleaseViewer from './pages/ReleaseViewer'
+import './styles/App.css'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing')
   const [selectedRelease, setSelectedRelease] = useState(null)
-  const [currentStage, setCurrentStage] = useState(0)
 
   const handleViewRelease = (release) => {
     setSelectedRelease(release)
-    setCurrentStage(0)
     setCurrentPage('viewer')
   }
 
@@ -27,8 +25,6 @@ function App() {
       {currentPage === 'viewer' && selectedRelease && (
         <ReleaseViewer
           release={selectedRelease}
-          currentStage={currentStage}
-          setCurrentStage={setCurrentStage}
           onBack={handleBackToLanding}
         />
       )}
