@@ -15,7 +15,7 @@ Event replay POC for release and deployment lifecycles. The Go backend serves or
 ```bash
 cd backend
 go mod tidy
-go run main.go
+go run main.go rules.go
 ```
 
 The API runs on `http://localhost:8000`.
