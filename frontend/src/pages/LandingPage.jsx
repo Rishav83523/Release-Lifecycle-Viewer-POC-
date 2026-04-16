@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import ReleasesList from '../components/release/ReleasesList'
 import StatusOverview from '../components/common/StatusOverview'
+import TrendingAnalytics from '../components/common/TrendingAnalytics'
+import LatestActivity from '../components/common/LatestActivity'
 import UploadArea from '../components/release/UploadArea'
 import { API_BASE, normalizeReleaseSummary, uploadReleasePayload } from '../lib/releaseModel'
 import '../styles/pages/LandingPage.css'
@@ -178,6 +180,8 @@ export default function LandingPage({ onViewRelease }) {
 
         <div className="right-column">
           <StatusOverview releases={overviewReleases} />
+          <TrendingAnalytics releases={overviewReleases} />
+          <LatestActivity releases={overviewReleases} />
         </div>
       </div>
     </div>

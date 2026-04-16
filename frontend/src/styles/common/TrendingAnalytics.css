@@ -1,0 +1,138 @@
+.trending-analytics {
+  background: var(--primary-white);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(42, 127, 201, 0.05);
+  transition: all 0.3s ease;
+}
+
+.trending-analytics:hover {
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.1);
+}
+
+.trending-analytics h3 {
+  font-size: 1.1em;
+  color: var(--primary-black);
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.chart-container {
+  width: 100%;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-svg {
+  max-width: 100%;
+  height: auto;
+  width: 100%;
+}
+
+.grid-line {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+  stroke-dasharray: 3, 3;
+}
+
+.axis-line {
+  stroke: var(--deployment-tab-text-color);
+  stroke-width: 1.5;
+}
+
+.y-axis-label {
+  font-size: 11px;
+  fill: var(--deployment-tab-text-color);
+  text-anchor: end;
+  font-weight: 500;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-width 0.2s ease;
+}
+
+.line.passed-line {
+  stroke: #249446;
+}
+
+.line.failed-line {
+  stroke: #ca2b2b;
+}
+
+.data-point {
+  transition: all 0.2s ease;
+}
+
+.data-point.passed-point {
+  fill: #249446;
+  stroke: var(--primary-white);
+  stroke-width: 2;
+}
+
+.data-point.failed-point {
+  fill: #ca2b2b;
+  stroke: var(--primary-white);
+  stroke-width: 2;
+}
+
+.data-point:hover {
+  r: 5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.chart-legend {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  color: var(--primary-black);
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.passed {
+  background: #249446;
+}
+
+.legend-dot.failed {
+  background: #ca2b2b;
+}
+
+@media (max-width: 768px) {
+  .trending-analytics {
+    padding: 16px;
+  }
+
+  .chart-container {
+    padding: 8px;
+  }
+
+  .chart-legend {
+    gap: 16px;
+  }
+
+  .legend-item {
+    font-size: 0.85em;
+  }
+}

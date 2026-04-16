@@ -2,6 +2,10 @@ package handlers
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -105,6 +109,27 @@ func CreateRelease(c *gin.Context) {
 		}
 	}
 
+	// Compute content hash to prevent duplicates
+	contentHash, err := computeContentHash(payload.Events)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.Response{Error: "Failed to process release"})
+		return
+	}
+
+	// Check if content already exists
+	existing := config.ReleasesCollection.FindOne(ctx, bson.M{"contentHash": contentHash})
+	if existing.Err() == nil {
+		// Content already exists
+		c.JSON(http.StatusConflict, models.Response{Error: "This release content already exists. Uploading the same JSON multiple times is not allowed."})
+		return
+	} else if existing.Err() != mongo.ErrNoDocuments {
+		// Database error
+		c.JSON(500, models.Response{Error: "Database error"})
+		return
+	}
+
+	payload.ContentHash = contentHash
+
 	validationResult := validation.ValidateRelease(&payload)
 
 	if !validationResult.Passed {
@@ -122,7 +147,7 @@ func CreateRelease(c *gin.Context) {
 	payload.Status = deriveStatus(payload.Events)
 	payload.UpdatedAt = now
 
-	existing := config.ReleasesCollection.FindOne(ctx, bson.M{"_id": payload.ID})
+	existing = config.ReleasesCollection.FindOne(ctx, bson.M{"_id": payload.ID})
 	if existing.Err() == nil {
 		_, err := config.ReleasesCollection.ReplaceOne(ctx, bson.M{"_id": payload.ID}, payload)
 		if err != nil {
@@ -134,7 +159,7 @@ func CreateRelease(c *gin.Context) {
 	}
 
 	payload.CreatedAt = now
-	_, err := config.ReleasesCollection.InsertOne(ctx, payload)
+	_, err = config.ReleasesCollection.InsertOne(ctx, payload)
 	if err != nil {
 		c.JSON(500, models.Response{Error: "Failed to create release"})
 		return
@@ -264,4 +289,15 @@ func deriveStatus(events []models.ReleaseEvent) string {
 	}
 
 	return "Passed"
+}
+
+func computeContentHash(events []models.ReleaseEvent) (string, error) {
+	// Serialize events to JSON for hashing to get consistent hash
+	eventsJSON, err := json.Marshal(events)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal events: %w", err)
+	}
+
+	hash := sha256.Sum256(eventsJSON)
+	return hex.EncodeToString(hash[:]), nil
 }

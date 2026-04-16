@@ -44,6 +44,7 @@ type Release struct {
 	Summary     string         `json:"summary"`
 	Description string         `json:"description"`
 	Events      []ReleaseEvent `json:"events"`
+	ContentHash string         `json:"contentHash" bson:"contentHash"`
 	CreatedAt   time.Time      `json:"createdAt" bson:"createdAt"`
 	UpdatedAt   time.Time      `json:"updatedAt" bson:"updatedAt"`
 }

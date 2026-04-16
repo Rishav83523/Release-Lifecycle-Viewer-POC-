@@ -89,10 +89,12 @@ export default function StageDetails({
         <div className="failure-points-section">
           <h3>Failure Reason</h3>
           <div className="error-alert">
-            <div className="error-icon">⚠</div>
             <div className="error-content">
               <h4>{event.failureReason}</h4>
-              <p>{event.recommendation || 'Inspect the logs and dependent services before replaying the sequence.'}</p>
+              <div className="suggestion-box">
+                <span className="suggestion-label">💡 Suggestion:</span>
+                <p>{event.recommendation || 'Inspect the logs and dependent services before replaying the sequence.'}</p>
+              </div>
             </div>
           </div>
         </div>

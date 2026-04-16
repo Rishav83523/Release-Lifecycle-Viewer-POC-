@@ -12,6 +12,13 @@
   flex-shrink: 0;
 }
 
+.landing-page > .overview-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 25px 24px;
+  flex-shrink: 0;
+}
+
 .landing-header {
   background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
   color: var(--primary-black);
@@ -60,6 +67,7 @@
 .right-column {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   overflow: hidden;
 }
 
@@ -145,11 +153,19 @@
 }
 
 .table-row.failed {
-  background: linear-gradient(135deg, rgba(202, 43, 43, 0.03) 0%, rgba(202, 43, 43, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(202, 43, 43, 0.03) 0%,
+    rgba(202, 43, 43, 0.01) 100%
+  );
 }
 
 .table-row.failed:hover {
-  background: linear-gradient(135deg, rgba(202, 43, 43, 0.08) 0%, rgba(202, 43, 43, 0.04) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(202, 43, 43, 0.08) 0%,
+    rgba(202, 43, 43, 0.04) 100%
+  );
 }
 
 .col-name {

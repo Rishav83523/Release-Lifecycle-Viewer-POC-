@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -36,6 +37,17 @@ func Init() {
 
 	DBClient = client
 	ReleasesCollection = client.Database("pac-timeline").Collection("releases")
+
+	// Create unique index on contentHash to prevent duplicate content
+	indexModel := mongo.IndexModel{
+		Keys: bson.D{bson.E{Key: "contentHash", Value: 1}},
+		Options: options.Index().SetUnique(true).SetSparse(true),
+	}
+	_, err = ReleasesCollection.Indexes().CreateOne(ctx, indexModel)
+	if err != nil {
+		log.Printf("⚠️  Warning: Failed to create contentHash index: %v", err)
+	}
+
 	log.Println("✅ Connected to MongoDB")
 }
 
