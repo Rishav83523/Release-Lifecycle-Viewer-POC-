@@ -41,6 +41,9 @@ func main() {
 	// Replay
 	router.GET("/api/releases/:id/replay", handlers.GetReplayState)
 
+	// Suggestions
+	router.POST("/api/suggestions", handlers.GenerateSuggestion)
+
 	// Run server
 	port := ":8000"
 	log.Printf("Server running on http://localhost%s\n", port)

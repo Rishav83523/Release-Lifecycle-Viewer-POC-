@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import '../../styles/release/StageDetails.css'
 import LogsViewer from '../common/LogsViewer'
 
@@ -12,6 +13,52 @@ export default function StageDetails({
   isAutoRunning,
   runningEventIndex,
 }) {
+  const [suggestion, setSuggestion] = useState(event?.recommendation || '')
+  const [loadingSuggestion, setLoadingSuggestion] = useState(false)
+  const fetchedFailureRef = useRef(null)
+
+  useEffect(() => {
+    if (!event || !event.failureReason || event.status !== 'failed') {
+      return
+    }
+
+    // Skip if we already fetched for this failure reason
+    if (fetchedFailureRef.current === event.failureReason) {
+      return
+    }
+
+    // Always fetch suggestion from Groq API for failures
+    const fetchSuggestion = async () => {
+      setLoadingSuggestion(true)
+      try {
+        const response = await fetch('/api/suggestions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            failureReason: event.failureReason,
+            eventType: event.step || event.event,
+            releaseInfo: `Status: ${event.status}`,
+          }),
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setSuggestion(data.suggestion)
+          fetchedFailureRef.current = event.failureReason
+        } else {
+          setSuggestion('Unable to generate suggestion. Please review the logs.')
+        }
+      } catch (error) {
+        console.error('Failed to fetch suggestion:', error)
+        setSuggestion('Unable to generate suggestion. Please review the logs.')
+      } finally {
+        setLoadingSuggestion(false)
+      }
+    }
+
+    fetchSuggestion()
+  }, [event?.failureReason, event?.status])
+
   if (!event) {
     return null
   }
@@ -92,8 +139,10 @@ export default function StageDetails({
             <div className="error-content">
               <h4>{event.failureReason}</h4>
               <div className="suggestion-box">
-                <span className="suggestion-label">💡 Suggestion:</span>
-                <p>{event.recommendation || 'Inspect the logs and dependent services before replaying the sequence.'}</p>
+                <span className="suggestion-label">
+                  💡 Suggestion:{loadingSuggestion ? ' Generating...' : ''}
+                </span>
+                <p>{suggestion}</p>
               </div>
             </div>
           </div>
