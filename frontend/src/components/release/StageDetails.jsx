@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import '../../styles/release/StageDetails.css'
 import LogsViewer from '../common/LogsViewer'
 
@@ -99,7 +99,7 @@ export default function StageDetails({
           <button
             className="nav-btn"
             onClick={onNextEvent}
-            disabled={eventIndex === totalEvents - 1 || isAutoRunning}
+            disabled={eventIndex === totalEvents - 1 || isAutoRunning || event?.status === 'failed'}
           >
             Next →
           </button>
